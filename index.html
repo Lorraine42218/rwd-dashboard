@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧數據儀表板</title>
+    <!-- 引入 Bootstrap 5 RWD 框架 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 引入 Chart.js 圖表庫 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-light">
+
+    <!-- 導航列 (RWD Navbar) -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">數據探勘展示平台</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#news">最新消息</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#chart-section">資料圖表</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容區 -->
+    <div class="container my-4">
+        
+        <!-- 區塊 1：最新消息 -->
+        <section id="news" class="mb-5">
+            <h2 class="border-start border-4 border-primary ps-2 mb-3">📢 最新消息</h2>
+            <div class="list-group shadow-sm">
+                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="badge bg-primary me-2">系統</span>
+                        <strong>網站正式上線與 RWD 架構優化完成</strong>
+                        <p class="text-muted mb-0 small">已支援手機、平板與電腦端流暢瀏覽。</p>
+                    </div>
+                    <small class="text-muted">2026-09-21</small>
+                </div>
+                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="badge bg-success me-2">更新</span>
+                        <strong>圖表模組化設計預備中</strong>
+                        <p class="text-muted mb-0 small">預計導入動態 API 串接 MySQL 資料庫。</p>
+                    </div>
+                    <small class="text-muted">2026-09-20</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- 區塊 2：未來可連接 MySQL 資料庫圖表 -->
+        <section id="chart-section">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="border-start border-4 border-success ps-2 mb-0">📊 資料統計圖表</h2>
+                <button class="btn btn-sm btn-outline-primary" onclick="loadDatabaseData()">🔄 模擬同步 MySQL 資料</button>
+            </div>
+            
+            <div class="row g-4">
+                <!-- 圖表卡片 1 -->
+                <div class="col-12 col-md-8">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header bg-white fw-bold">銷售/數據趨勢圖 (預留 MySQL 串接)</div>
+                        <div class="card-body">
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!-- 說明卡片 2 -->
+                <div class="col-12 col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header bg-white fw-bold">MySQL 串接說明</div>
+                        <div class="card-body">
+                            <p class="card-text">目前圖表為靜態/模擬數據展示。</p>
+                            <hr>
+                            <h6>未來後端串接步驟：</h6>
+                            <ol class="small ps-3 text-muted">
+                                <li>部署後端 API (Node.js/Python/PHP)。</li>
+                                <li>從 MySQL 撈取 SELECT 數據。</li>
+                                <li>以 JSON 格式回傳至前端。</li>
+                                <li>呼叫 fetch('/api/data') 更新 Chart.js。</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Bootstrap JS 與 Chart.js 繪圖邏輯 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 初始化 Chart.js 圖表
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['一月', '二月', '三月', '四月', '五月', '六月'],
+                datasets: [{
+                    label: '資料量 (MySQL 模擬數據)',
+                    data: [12, 19, 3, 5, 2, 15],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // 模擬未來從 MySQL API 載入數據的函數
+        function loadDatabaseData() {
+            const simulatedData = Array.from({length: 6}, () => Math.floor(Math.random() * 30) + 1);
+            myChart.data.datasets[0].data = simulatedData;
+            myChart.update();
+            alert("已成功模擬從 MySQL 資料庫拉取最新數據！");
+        }
+    </script>
+</body>
+</html>
